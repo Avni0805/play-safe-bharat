@@ -3,25 +3,55 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { PenSquare, Send } from "lucide-react";
 import { toast } from "sonner";
 
 const PostStoryDialog = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { user } = useAuth();
   const [content, setContent] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handlePost = () => {
+  const handlePost = async () => {
     if (!content.trim()) {
       toast.error(t({ en: "Please write something to post", hi: "पोस्ट करने के लिए कुछ लिखें" }));
       return;
     }
-    toast.success(t({ 
-      en: "Your story has been submitted for moderation", 
-      hi: "आपकी कहानी मॉडरेशन के लिए सबमिट की गई है" 
-    }));
-    setContent("");
-    setOpen(false);
+
+    if (!user) {
+      toast.error(t({ en: "You must be logged in", hi: "आपको लॉगिन करना होगा" }));
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from('stories')
+        .insert({
+          user_id: user.id,
+          content: content.trim(),
+          language,
+          is_approved: false
+        });
+
+      if (error) throw error;
+
+      toast.success(t({ 
+        en: "Your story has been submitted for moderation", 
+        hi: "आपकी कहानी मॉडरेशन के लिए सबमिट की गई है" 
+      }));
+      setContent("");
+      setOpen(false);
+    } catch (error: any) {
+      console.error('Error posting story:', error);
+      toast.error(t({ en: "Failed to post story", hi: "कहानी पोस्ट करने में विफल" }));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,9 +88,9 @@ const PostStoryDialog = () => {
             <Button variant="outline" onClick={() => setOpen(false)}>
               {t({ en: "Cancel", hi: "रद्द करें" })}
             </Button>
-            <Button onClick={handlePost} className="gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90">
+            <Button onClick={handlePost} className="gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90" disabled={loading}>
               <Send className="h-4 w-4" />
-              {t({ en: "Post", hi: "पोस्ट करें" })}
+              {loading ? t({ en: "Posting...", hi: "पोस्ट हो रहा है..." }) : t({ en: "Post", hi: "पोस्ट करें" })}
             </Button>
           </div>
         </div>

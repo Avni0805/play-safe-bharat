@@ -1,10 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Home, BookOpen, MessageSquare, Newspaper, Calendar, User, LogOut, Languages } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/auth");
+  };
 
   const navItems = [
     { icon: Home, label: { en: "Home", hi: "होम" }, path: "/" },
@@ -48,7 +56,7 @@ const Header = () => {
             <Languages className="h-4 w-4" />
             {language === 'en' ? 'हिं' : 'EN'}
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2 text-destructive hover:text-destructive">
+          <Button variant="ghost" size="sm" className="gap-2 text-destructive hover:text-destructive" onClick={handleLogout}>
             <LogOut className="h-4 w-4" />
             <span className="hidden md:inline">{t({ en: "Logout", hi: "लॉगआउट" })}</span>
           </Button>
