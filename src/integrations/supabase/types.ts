@@ -14,7 +14,382 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      badges: {
+        Row: {
+          created_at: string | null
+          criteria: string | null
+          description_en: string | null
+          description_hi: string | null
+          icon: string
+          id: string
+          name_en: string
+          name_hi: string
+        }
+        Insert: {
+          created_at?: string | null
+          criteria?: string | null
+          description_en?: string | null
+          description_hi?: string | null
+          icon: string
+          id?: string
+          name_en: string
+          name_hi: string
+        }
+        Update: {
+          created_at?: string | null
+          criteria?: string | null
+          description_en?: string | null
+          description_hi?: string | null
+          icon?: string
+          id?: string
+          name_en?: string
+          name_hi?: string
+        }
+        Relationships: []
+      }
+      event_registrations: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string | null
+          description_en: string | null
+          description_hi: string | null
+          event_date: string
+          event_time: string
+          event_type: string
+          id: string
+          location: string | null
+          max_participants: number | null
+          title_en: string
+          title_hi: string
+        }
+        Insert: {
+          created_at?: string | null
+          description_en?: string | null
+          description_hi?: string | null
+          event_date: string
+          event_time: string
+          event_type: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          title_en: string
+          title_hi: string
+        }
+        Update: {
+          created_at?: string | null
+          description_en?: string | null
+          description_hi?: string | null
+          event_date?: string
+          event_time?: string
+          event_type?: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          title_en?: string
+          title_hi?: string
+        }
+        Relationships: []
+      }
+      modules: {
+        Row: {
+          content_en: string | null
+          content_hi: string | null
+          created_at: string | null
+          description_en: string | null
+          description_hi: string | null
+          id: string
+          order_index: number
+          title_en: string
+          title_hi: string
+        }
+        Insert: {
+          content_en?: string | null
+          content_hi?: string | null
+          created_at?: string | null
+          description_en?: string | null
+          description_hi?: string | null
+          id?: string
+          order_index: number
+          title_en: string
+          title_hi: string
+        }
+        Update: {
+          content_en?: string | null
+          content_hi?: string | null
+          created_at?: string | null
+          description_en?: string | null
+          description_hi?: string | null
+          id?: string
+          order_index?: number
+          title_en?: string
+          title_hi?: string
+        }
+        Relationships: []
+      }
+      news_articles: {
+        Row: {
+          category: string | null
+          content_en: string | null
+          content_hi: string | null
+          created_at: string | null
+          excerpt_en: string | null
+          excerpt_hi: string | null
+          id: string
+          published_at: string | null
+          title_en: string
+          title_hi: string
+        }
+        Insert: {
+          category?: string | null
+          content_en?: string | null
+          content_hi?: string | null
+          created_at?: string | null
+          excerpt_en?: string | null
+          excerpt_hi?: string | null
+          id?: string
+          published_at?: string | null
+          title_en: string
+          title_hi: string
+        }
+        Update: {
+          category?: string | null
+          content_en?: string | null
+          content_hi?: string | null
+          created_at?: string | null
+          excerpt_en?: string | null
+          excerpt_hi?: string | null
+          id?: string
+          published_at?: string | null
+          title_en?: string
+          title_hi?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          sport_discipline: string | null
+          state: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          sport_discipline?: string | null
+          state?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          sport_discipline?: string | null
+          state?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      stories: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_approved: boolean | null
+          language: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_approved?: boolean | null
+          language?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_approved?: boolean | null
+          language?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      story_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          story_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          story_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_comments_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      story_likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          story_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          story_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_likes_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_module_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          module_id: string
+          progress: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_id: string
+          progress?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_id?: string
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
