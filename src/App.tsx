@@ -13,6 +13,7 @@ import Quiz from "./pages/Quiz";
 import Forums from "./pages/Forums";
 import News from "./pages/News";
 import Events from "./pages/Events";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
               <Route path="/forums" element={<ProtectedRoute><Forums /></ProtectedRoute>} />
               <Route path="/news" element={<ProtectedRoute><News /></ProtectedRoute>} />
               <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
