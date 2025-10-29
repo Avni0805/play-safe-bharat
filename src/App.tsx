@@ -9,6 +9,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Modules from "./pages/Modules";
+import ModuleContent from "./pages/ModuleContent";
 import Quiz from "./pages/Quiz";
 import Forums from "./pages/Forums";
 import News from "./pages/News";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
               <Route path="/modules" element={<ProtectedRoute><Modules /></ProtectedRoute>} />
+              <Route path="/module/:moduleId" element={<ProtectedRoute><ModuleContent /></ProtectedRoute>} />
               <Route path="/quiz/:moduleId" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
               <Route path="/forums" element={<ProtectedRoute><Forums /></ProtectedRoute>} />
               <Route path="/news" element={<ProtectedRoute><News /></ProtectedRoute>} />

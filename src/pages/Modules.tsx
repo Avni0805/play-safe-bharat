@@ -82,7 +82,7 @@ const Modules = () => {
   };
 
   const handleStartModule = (moduleId: string) => {
-    navigate(`/quiz/${moduleId}`);
+    navigate(`/module/${moduleId}`);
   };
 
   if (loading) {

@@ -118,6 +118,59 @@ export type Database = {
         }
         Relationships: []
       }
+      module_chapters: {
+        Row: {
+          content_en: string
+          content_hi: string
+          content_type: string
+          created_at: string | null
+          duration_minutes: number | null
+          id: string
+          media_url: string | null
+          module_id: string
+          order_index: number
+          title_en: string
+          title_hi: string
+          updated_at: string | null
+        }
+        Insert: {
+          content_en: string
+          content_hi: string
+          content_type?: string
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          media_url?: string | null
+          module_id: string
+          order_index: number
+          title_en: string
+          title_hi: string
+          updated_at?: string | null
+        }
+        Update: {
+          content_en?: string
+          content_hi?: string
+          content_type?: string
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          media_url?: string | null
+          module_id?: string
+          order_index?: number
+          title_en?: string
+          title_hi?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_chapters_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       modules: {
         Row: {
           content_en: string | null
@@ -345,6 +398,44 @@ export type Database = {
             columns: ["badge_id"]
             isOneToOne: false
             referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_chapter_progress: {
+        Row: {
+          chapter_id: string
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          chapter_id: string
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          chapter_id?: string
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_chapter_progress_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "module_chapters"
             referencedColumns: ["id"]
           },
         ]
