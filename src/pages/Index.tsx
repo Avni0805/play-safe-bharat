@@ -3,8 +3,12 @@ import ProgressOverview from "@/components/ProgressOverview";
 import CommunityFeed from "@/components/CommunityFeed";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import PostStoryDialog from "@/components/PostStoryDialog";
+import ModerationPanel from "@/components/ModerationPanel";
+import { useUserRole } from "@/hooks/useUserRole";
 
 const Index = () => {
+  const { isModerator } = useUserRole();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
       <Header />
@@ -25,6 +29,9 @@ const Index = () => {
           <div className="flex justify-center">
             <PostStoryDialog />
           </div>
+
+          {/* Moderation Panel (Moderators/Admins Only) */}
+          {isModerator && <ModerationPanel />}
 
           {/* Progress Overview */}
           <ProgressOverview />
