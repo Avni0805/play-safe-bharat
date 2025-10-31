@@ -12,6 +12,7 @@ import Modules from "./pages/Modules";
 import ModuleContent from "./pages/ModuleContent";
 import Quiz from "./pages/Quiz";
 import Forums from "./pages/Forums";
+import ForumTopic from "./pages/ForumTopic";
 import News from "./pages/News";
 import Events from "./pages/Events";
 import Profile from "./pages/Profile";
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/module/:moduleId" element={<ProtectedRoute><ModuleContent /></ProtectedRoute>} />
               <Route path="/quiz/:moduleId" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
               <Route path="/forums" element={<ProtectedRoute><Forums /></ProtectedRoute>} />
+              <Route path="/forums/:id" element={<ProtectedRoute><ForumTopic /></ProtectedRoute>} />
               <Route path="/news" element={<ProtectedRoute><News /></ProtectedRoute>} />
               <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

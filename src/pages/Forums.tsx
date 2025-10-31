@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -90,6 +91,7 @@ const recentTopics = [
 
 const Forums = () => {
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -271,10 +273,14 @@ const Forums = () => {
             </h2>
             <div className="space-y-3">
               {recentTopics.map((topic) => (
-                <Card key={topic.id} className="p-6 hover:shadow-md transition-shadow cursor-pointer">
+                <Card 
+                  key={topic.id} 
+                  className="p-6 hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => navigate(`/forums/${topic.id}`)}
+                >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 space-y-2">
-                      <h3 className="text-lg font-semibold">
+                      <h3 className="text-lg font-semibold hover:text-primary transition-colors">
                         {language === 'en' ? topic.title_en : topic.title_hi}
                       </h3>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">

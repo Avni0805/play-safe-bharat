@@ -5,8 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Newspaper, Search, Calendar, Tag } from "lucide-react";
+import { Newspaper, Search, Calendar, Tag, X } from "lucide-react";
 import { format } from "date-fns";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface NewsArticle {
   id: string;
@@ -26,6 +32,7 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
 
   useEffect(() => {
     fetchArticles();
@@ -145,6 +152,7 @@ const News = () => {
                 <Card 
                   key={article.id} 
                   className="overflow-hidden hover:shadow-lg transition-all cursor-pointer group"
+                  onClick={() => setSelectedArticle(article)}
                 >
                   <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
                     <Newspaper className="h-16 w-16 text-primary/40 group-hover:scale-110 transition-transform" />
@@ -181,6 +189,41 @@ const News = () => {
           )}
         </div>
       </main>
+
+      {/* Article Detail Dialog */}
+      <Dialog open={!!selectedArticle} onOpenChange={() => setSelectedArticle(null)}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          {selectedArticle && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                  <Tag className="h-3 w-3" />
+                  <span>{selectedArticle.category}</span>
+                  <span>•</span>
+                  <Calendar className="h-3 w-3" />
+                  <span>{format(new Date(selectedArticle.published_at), 'MMM dd, yyyy')}</span>
+                </div>
+                <DialogTitle className="text-2xl">
+                  {language === 'en' ? selectedArticle.title_en : selectedArticle.title_hi}
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="h-64 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
+                  <Newspaper className="h-24 w-24 text-primary/40" />
+                </div>
+                <p className="text-lg font-medium text-muted-foreground">
+                  {language === 'en' ? selectedArticle.excerpt_en : selectedArticle.excerpt_hi}
+                </p>
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <p className="whitespace-pre-wrap">
+                    {language === 'en' ? selectedArticle.content_en : selectedArticle.content_hi}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
