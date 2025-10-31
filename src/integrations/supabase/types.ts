@@ -504,7 +504,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          sport_discipline: string | null
+          state: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          sport_discipline?: string | null
+          state?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          sport_discipline?: string | null
+          state?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_story_like_count: { Args: { story_uuid: string }; Returns: number }
