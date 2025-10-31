@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { PenSquare, Send } from "lucide-react";
 import { toast } from "sonner";
+import { storySchema } from "@/lib/validation";
 
 const PostStoryDialog = () => {
   const { t, language } = useLanguage();
@@ -16,8 +17,12 @@ const PostStoryDialog = () => {
   const [loading, setLoading] = useState(false);
 
   const handlePost = async () => {
-    if (!content.trim()) {
-      toast.error(t({ en: "Please write something to post", hi: "पोस्ट करने के लिए कुछ लिखें" }));
+    // Validate with zod
+    const validation = storySchema.safeParse({ content });
+    
+    if (!validation.success) {
+      const errorMsg = validation.error.errors[0].message;
+      toast.error(t({ en: errorMsg, hi: errorMsg }));
       return;
     }
 
@@ -47,8 +52,10 @@ const PostStoryDialog = () => {
       setContent("");
       setOpen(false);
     } catch (error: any) {
-      console.error('Error posting story:', error);
-      toast.error(t({ en: "Failed to post story", hi: "कहानी पोस्ट करने में विफल" }));
+      if (import.meta.env.DEV) {
+        console.error('Error posting story:', error);
+      }
+      toast.error(t({ en: "Failed to post story. Please try again.", hi: "कहानी पोस्ट करने में विफल। कृपया पुनः प्रयास करें।" }));
     } finally {
       setLoading(false);
     }
@@ -78,6 +85,16 @@ const PostStoryDialog = () => {
             onChange={(e) => setContent(e.target.value)}
             className="min-h-[200px] resize-none"
           />
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">
+              {content.length}/5000 {t({ en: "characters", hi: "वर्ण" })}
+            </span>
+            {content.length > 5000 && (
+              <span className="text-destructive font-medium">
+                {t({ en: "Too long!", hi: "बहुत लंबा!" })}
+              </span>
+            )}
+          </div>
           <div className="text-sm text-muted-foreground">
             {t({ 
               en: "Note: Your story will be reviewed by moderators before being published.", 

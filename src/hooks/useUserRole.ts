@@ -30,7 +30,9 @@ export const useUserRole = () => {
         
         setRole(data?.role || 'user');
       } catch (error) {
-        console.error('Error fetching user role:', error);
+        if (import.meta.env.DEV) {
+          console.error('Error fetching user role:', error);
+        }
         setRole('user');
       } finally {
         setLoading(false);

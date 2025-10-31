@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, BookOpen, Edit2, Save, X } from "lucide-react";
+import { profileSchema } from "@/lib/validation";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -81,10 +82,12 @@ const Profile = () => {
         badgesEarned: badgesData?.length || 0,
       });
     } catch (error: any) {
-      console.error("Error fetching profile:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error fetching profile:", error);
+      }
       toast({
         title: language === "en" ? "Error" : "त्रुटि",
-        description: language === "en" ? "Failed to load profile" : "प्रोफ़ाइल लोड करने में विफल",
+        description: language === "en" ? "Failed to load profile. Please try again." : "प्रोफ़ाइल लोड करने में विफल। कृपया पुनः प्रयास करें।",
         variant: "destructive",
       });
     } finally {
@@ -93,6 +96,19 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
+    // Validate with zod
+    const validation = profileSchema.safeParse(formData);
+    
+    if (!validation.success) {
+      const errorMsg = validation.error.errors[0].message;
+      toast({
+        title: language === "en" ? "Validation Error" : "सत्यापन त्रुटि",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setSaving(true);
 
@@ -111,10 +127,12 @@ const Profile = () => {
         description: language === "en" ? "Profile updated successfully" : "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई",
       });
     } catch (error: any) {
-      console.error("Error updating profile:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error updating profile:", error);
+      }
       toast({
         title: language === "en" ? "Error" : "त्रुटि",
-        description: language === "en" ? "Failed to update profile" : "प्रोफ़ाइल अपडेट करने में विफल",
+        description: language === "en" ? "Failed to update profile. Please try again." : "प्रोफ़ाइल अपडेट करने में विफल। कृपया पुनः प्रयास करें।",
         variant: "destructive",
       });
     } finally {

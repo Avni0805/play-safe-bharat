@@ -23,7 +23,7 @@ const ModerationPanel = () => {
         .from('stories')
         .select(`
           *,
-          profiles:user_id (full_name, avatar_url)
+          public_profiles:user_id (full_name, avatar_url)
         `)
         .eq('is_approved', false)
         .order('created_at', { ascending: false });
@@ -31,7 +31,9 @@ const ModerationPanel = () => {
       if (error) throw error;
       setPendingStories(data || []);
     } catch (error) {
-      console.error('Error fetching pending stories:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching pending stories:', error);
+      }
       toast.error(t({ en: "Failed to load pending stories", hi: "लंबित कहानियां लोड करने में विफल" }));
     } finally {
       setLoading(false);
@@ -50,7 +52,9 @@ const ModerationPanel = () => {
       toast.success(t({ en: "Story approved", hi: "कहानी स्वीकृत" }));
       setPendingStories(prev => prev.filter(s => s.id !== storyId));
     } catch (error) {
-      console.error('Error approving story:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error approving story:', error);
+      }
       toast.error(t({ en: "Failed to approve story", hi: "कहानी स्वीकृत करने में विफल" }));
     }
   };
@@ -67,7 +71,9 @@ const ModerationPanel = () => {
       toast.success(t({ en: "Story rejected", hi: "कहानी अस्वीकृत" }));
       setPendingStories(prev => prev.filter(s => s.id !== storyId));
     } catch (error) {
-      console.error('Error rejecting story:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error rejecting story:', error);
+      }
       toast.error(t({ en: "Failed to reject story", hi: "कहानी अस्वीकृत करने में विफल" }));
     }
   };
@@ -102,7 +108,7 @@ const ModerationPanel = () => {
 
         <div className="space-y-3">
           {pendingStories.map((story) => {
-            const profile = story.profiles || {};
+            const profile = story.public_profiles || {};
             const initials = profile.full_name
               ? profile.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
               : '??';

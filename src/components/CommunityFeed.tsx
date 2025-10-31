@@ -24,12 +24,12 @@ const CommunityFeed = () => {
     if (!user) return;
 
     try {
-      // Fetch approved stories with profiles
+      // Fetch approved stories with public profiles
       const { data: storiesData } = await supabase
         .from('stories')
         .select(`
           *,
-          profiles:user_id (full_name, avatar_url)
+          public_profiles:user_id (full_name, avatar_url)
         `)
         .eq('is_approved', true)
         .order('created_at', { ascending: false })
@@ -54,7 +54,9 @@ const CommunityFeed = () => {
       setLikes(userLikes);
       setLikeCounts(counts);
     } catch (error) {
-      console.error('Error fetching stories:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching stories:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -84,7 +86,9 @@ const CommunityFeed = () => {
 
       setLikes(prev => ({ ...prev, [storyId]: !isLiked }));
     } catch (error) {
-      console.error('Error toggling like:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error toggling like:', error);
+      }
     }
   };
 
@@ -113,7 +117,7 @@ const CommunityFeed = () => {
           </Card>
         ) : (
           stories.map((story) => {
-            const profile = story.profiles || {};
+            const profile = story.public_profiles || {};
             const initials = profile.full_name
               ? profile.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
               : '??';
